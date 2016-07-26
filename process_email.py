@@ -55,10 +55,25 @@ def process_email(email_file):
 	# Concatenate elements into a string
 	processed = ' '.join(map(str, tokens))
 
-	# Print out string. For testing purposes.
-	print processed
+	return [int(x) for x in processed.split()]
+
+# Email features. Converting list of tokens post processing to logical list.
+# The list has 1s in the indices when the token is = to that entry of the vocab list
+def email_features(word_indices):
+	vocab_list = get_vocab_list("vocab.txt") # should probably store length to save time
+	email_features = [0] * len(vocab_list)
+
+	# could also do for token in word_indices, but vocab_list length is less variable
+	for i in range(0, len(vocab_list)):	
+		if i in word_indices:
+			email_features[i] = 1
+
+	return email_features
+
+	#for testing, print how many non-zero elements there were 
+	#print sum(email_features)
 
 # for testing
 if __name__ == "__main__":
     import sys
-    process_email(sys.argv[1])
+    email_features(process_email(sys.argv[1]))
