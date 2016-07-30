@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Spam Checker</title>
+	</head>
+
+	<style type="text/css">
+		body {
+			font-family: sans-serif;
+			width: 800px;
+			margin: 0 auto;
+			padding: 10px;
+		}
+
+		.map {
+			right: 0;
+			top: 0;
+			margin: 5px;
+		}
+
+		.error {
+			color: red
+		}
+
+		label {
+			display: block;
+			font-size: 20px;
+		}
+
+		input[type=text] {
+			width: 400px;
+			font-size: 20px;
+			padding: 2px;
+		}
+
+		textarea {
+			width: 400px;
+			height: 200px;
+			font-size: 17px;
+			font-family: monospace;
+		}
+
+		input[type=submit] {
+			font-size: 24px;
+		}
+
+		hr {
+			margin: 20px auto;
+		}
+
+		.art + .art {
+			margin-top: 20px;
+		}
+
+		.art-title {
+			font-weight: bold;
+			font-size: 20px;
+		}
+
+		.art-body {
+			margin: 0;
+			font-size: 17px;
+		}
+
+		#wrapper {
+			overflow: hidden;
+		}
+
+		#left {
+			float: left;
+		}
+
+	</style>
+
+	<body>
+		<h1>Spam Checker</h1>
+
+		<div id="wrapper">
+			<div id="left">
+				<form method="post">
+					<label>
+						<div>Email Content</div>
+						<textarea name="email">{{email}}</textarea>
+					</label>
+
+					<div class="error">{{error}}</div>
+
+					<input type="submit">
+				</form>
+			</div>
+		</div>
+
+	</body>
+</html>
