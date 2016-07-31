@@ -1,5 +1,11 @@
 import webapp2
 import cgi
+import os
+import jinja2
+
+template_dir = os.path.join(os.path.dirname(__file__), '.')
+jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
+                                autoescape = True)
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -23,7 +29,7 @@ class MainPage(Handler):
         email = self.request.get("email")
 
         if email:
-            # do processing stuffs
+            email = "to be processed" # put processing stuff later
         else:
             error = "we need some email contents"
             self.render_front(title, email, error)
