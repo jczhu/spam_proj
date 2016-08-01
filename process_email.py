@@ -14,11 +14,12 @@ def get_vocab_list(filename):
 
 # Processes email by modifying urls, trimming words to word roots, removing punctuation.
 # Returns list of word indices
-def process_email(email_file):
+def process_email(email_contents):
 	vocab_list = get_vocab_list("vocab.txt")
 
-	with open(email_file, 'r') as myfile:
-		email_contents = myfile.read().replace('\n', '')
+	# testing with text file
+	# with open(email_file, 'r') as myfile: 
+	#	email_contents = myfile.read().replace('\n', '')
 
 	email_contents = email_contents.lower() 	# hopefully not redundant
 
@@ -73,7 +74,8 @@ def email_features(word_indices):
 	#for testing, print how many non-zero elements there were 
 	#print sum(email_features)
 
+
 # for testing
-if __name__ == "__main__":
-    import sys
-    email_features(process_email(sys.argv[1]))
+#if __name__ == "__main__":
+#    import sys
+#    email_features(process_email(sys.argv[1]))

@@ -32,13 +32,14 @@ def top_spam_indicators(model):
 	coef = np.array(np.ravel(model.coef_))
 	return np.argpartition(coef, -15)[-15:]
 
+
 # for testing
-if __name__ == "__main__":
-    import sys
-    mat_contents = sio.loadmat('spamTrain.mat')
-    X = mat_contents['X']
-    y = np.ravel(mat_contents['y'])
-    model = spam_train(X, y)
-    tsi = top_spam_indicators(model)
-    vocab_list = get_vocab_list("vocab.txt")
-    print [(vocab_list[x]) for x in tsi] # also getting different results here
+# if __name__ == "__main__":
+#     import sys
+#     mat_contents = sio.loadmat('spamTrain.mat')
+#     X = mat_contents['X']
+#     y = np.ravel(mat_contents['y'])
+#     model = spam_train(X, y)
+#     tsi = top_spam_indicators(model)
+#     vocab_list = get_vocab_list("vocab.txt")
+#     print [(vocab_list[x]) for x in tsi] # also getting different results here
