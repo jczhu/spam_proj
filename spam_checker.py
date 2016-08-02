@@ -1,5 +1,4 @@
-import webapp2
-import cgi
+import web
 import os
 import jinja2
 import numpy as np
@@ -13,9 +12,9 @@ template_dir = os.path.join(os.path.dirname(__file__), '.')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                 autoescape = True)
 
-model = None # store model so won't have to computer over and over
+model = None # store model so won't have to compute over and over
 
-class Handler(webapp2.RequestHandler):
+class index:
     def write(self, *a, **kw):
         self.response.write(*a, **kw)
 
@@ -26,16 +25,15 @@ class Handler(webapp2.RequestHandler):
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
 
-class MainPage(Handler):
     def render_front(self, email="", error=""):
         self.render("front.html", email=email, error=error)
 
-    def get(self):
+    def GET(self):
         return self.render_front()
 
-    def post(self):
+    def POST(self):
         global model
-        email = self.request.get("email")
+        email = web.input().email
 
         if email:
             features = email_features(process_email(email))
@@ -58,11 +56,13 @@ class MainPage(Handler):
             error = "we need some email contents"
             self.render_front(email, error)
 
+urls = (
+    '/', 'index'
+)
 
-def escape_html(s):
-    return cgi.escape(s, quote = True)
+if __name__ == "__main__":
+    app = web.application(urls, globals())
+    app.run()
 
 
-app = webapp2.WSGIApplication([
-    ('/', MainPage)
-], debug=True)
+
