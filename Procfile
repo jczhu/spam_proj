@@ -1,1 +1,1 @@
-worker: python spam_checker.py
+web: python spam_checker.py
