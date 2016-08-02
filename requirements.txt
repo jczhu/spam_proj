@@ -1,6 +1,6 @@
 Jinja2==2.8
 nltk==3.2.1
 numpy==1.11.1
-scikit-learn==0.17.1
 scipy==0.17.1
+scikit-learn==0.17.1
 web.py==0.38
