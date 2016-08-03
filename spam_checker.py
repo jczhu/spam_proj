@@ -28,7 +28,7 @@ class index:
             error = "we need some email contents"
             return render.front(email=email, error=error)
         else:
-            features = email_features(process_email(email))
+            features = np.reshape(email_features(process_email(email)), (1, -1))
 
             # TO DO: add separate method to read in training data
             # TO DO: get training data from elsewhere
@@ -39,7 +39,7 @@ class index:
                 y = np.ravel(mat_contents['y'])
                 model = spam_train(X, y)
 
-            if np.asscalar(model.predict(X)) == 1: # predict not single value?
+            if np.asscalar(model.predict(features)) == 1: # predict not single value?
                 error = "spam"
             else:
                 error = "not spam"
