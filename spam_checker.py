@@ -39,7 +39,7 @@ class index:
                 y = np.ravel(mat_contents['y'])
                 model = spam_train(X, y)
 
-            if np.asscalar(model.predict(features)) == 1: # predict not single value?
+            if np.asscalar(model.predict(features)) == 1:
                 error = "spam"
             else:
                 error = "not spam"
