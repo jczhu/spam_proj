@@ -37,7 +37,7 @@ class index:
                 mat_contents = sio.loadmat('spamTrain.mat')
                 X = mat_contents['X']
                 y = np.ravel(mat_contents['y'])
-                model = spam_train(X, y)
+                model = spam_train(X, y, "linear")
 
             if np.asscalar(model.predict(features)) == 1:
                 error = "spam"
