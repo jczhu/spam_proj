@@ -1,4 +1,5 @@
 from nltk import PorterStemmer
+from nltk.corpus import stopwords
 import re
 import string
 
@@ -17,6 +18,7 @@ def get_vocab_list(filename):
 # Returns list of word indices
 def process_email(email_contents):
 	vocab_list = get_vocab_list("vocab.txt")
+	little_words = stopwords.words("english")
 
 	# testing with text file
 	# with open(email_file, 'r') as myfile: 
@@ -43,12 +45,17 @@ def process_email(email_contents):
 	# after doing all that, strip punctuation
 	email_contents = re.sub(r"[^a-zA-Z0-9]", " ", email_contents)
 
+	# remove stop words
+	email_contents = ' '.join([word for word in email_contents.split() 
+		if word not in little_words])
+
 	# Tokenize email and convert individual words to numbers, based on vocab list
 	tokens = email_contents.split()
 	for i in range(0, len(tokens)):
 		tokens[i] = PorterStemmer().stem_word(tokens[i])
 
-		print tokens[i],
+		# for testing, print the tokens post processing
+		# print tokens[i],
 		try:
 			temp = vocab_list.index(tokens[i])
 		except ValueError:
@@ -72,15 +79,14 @@ def email_features(word_indices):
 		if i in word_indices:
 			email_features[i] = 1
 
-	return email_features
-
 	#for testing, print how many non-zero elements there were 
-	#print sum(email_features)
+	# print sum(email_features)
 
+	return email_features
 
 # for testing
 if __name__ == "__main__":
    import sys
    with open(sys.argv[1], 'r') as myfile: 
    	email_contents = myfile.read().replace('\n', ' ')
-   process_email(email_contents)
+   email_features(process_email(email_contents))
