@@ -17,12 +17,7 @@ def get_vocab_list(filename):
 # Processes email by modifying urls, trimming words to word roots, removing punctuation.
 # Returns list of word indices
 def process_email(email_contents):
-	vocab_list = get_vocab_list("vocab.txt")
 	little_words = stopwords.words("english")
-
-	# testing with text file
-	# with open(email_file, 'r') as myfile: 
-	#	email_contents = myfile.read().replace('\n', '')
 
 	email_contents = email_contents.lower() 	# hopefully not redundant
 
@@ -54,29 +49,17 @@ def process_email(email_contents):
 	for i in range(0, len(tokens)):
 		tokens[i] = PorterStemmer().stem_word(tokens[i])
 
-		# for testing, print the tokens post processing
-		# print tokens[i],
-		try:
-			temp = vocab_list.index(tokens[i])
-		except ValueError:
-			tokens[i] = ""
-		else:
-			tokens[i] = temp
-
-	# Concatenate elements into a string
-	processed = ' '.join(map(str, tokens))
-
-	return [int(x) for x in processed.split()]
+	return tokens
 
 # Email features. Converting list of tokens post processing to logical list.
-# The list has 1s in the indices when the token is = to that entry of the vocab list
+# The list has 1s in the indices when that word is present in the processed email
 def email_features(word_indices):
 	vocab_list = get_vocab_list("vocab.txt") # should probably store length to save time
 	email_features = [0] * len(vocab_list)
 
 	# could also do for token in word_indices, but vocab_list length is less variable
 	for i in range(0, len(vocab_list)):	
-		if i in word_indices:
+		if vocab_list[i] in word_indices:
 			email_features[i] = 1
 
 	#for testing, print how many non-zero elements there were 

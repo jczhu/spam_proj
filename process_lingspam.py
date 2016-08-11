@@ -6,6 +6,9 @@ import os
 
 from process_email import process_email, email_features
 
+# holds the parsed email
+all_processed = []
+
 def process_lingspam():
 	all_paths = ['/part1/', '/part2/', '/part3/', '/part4/', '/part5/', '/part6/', 
 	'/part7/', '/part8/', '/part9/', '/part10/']
@@ -14,16 +17,13 @@ def process_lingspam():
 			process_folder()
 
 # remove subject line headers from each file and process the body of the email
-# store the result in a new folder called "cleaned"
+# return all the processed results from current folder
 def process_folder():
-	# make cleaned folder
-	print os.getcwd()
-	try: 
-		os.makedirs(os.getcwd() + "/cleaned")
-	except OSError:
-		if not os.path.isdir(os.getcwd() + "/cleaned"):
-			raise
-	print "folder" + os.getcwd()
+	global all_processed
+	for filename in os.listdir(os.getcwd()):
+		with open(filename, 'r') as myfile:
+			email_contents = myfile.read().splitlines(True)
+			all_processed.append(process_email(' '.join(email_contents[2:])))
 
 class cd:
     """Context manager for changing the current working directory"""
@@ -45,7 +45,6 @@ if __name__ == "__main__":
 	path = "~/Downloads/lingspam_public/bare/" 
 	with cd(path):
 		process_lingspam()
-
-
+	print all_processed[0]
 
 
