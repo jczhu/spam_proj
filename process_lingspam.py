@@ -4,6 +4,7 @@ from operator import itemgetter
 import string
 import os
 import re
+import scipy.io
 
 from process_email import process_email, email_features
 
@@ -71,6 +72,13 @@ def convert_to_features(processed_emails):
 
 	return features
 
+# writes data to mat files (split into training data and testing data)
+def write_to_mat(email_features, is_spam):
+	scipy.io.savemat('newTrain.mat', 
+		mdict={'X': email_features[:2610], 'Y': is_spam[:2610]})
+	scipy.io.savemat('newTest.mat', 
+		mdict={'Xtest': email_features[2610:], 'Ytest': is_spam[2610:]})
+
 class cd:
     """Context manager for changing the current working directory"""
     # obtained from Brian Hunt's answer to a Stack Overflow question at
@@ -103,5 +111,6 @@ if __name__ == "__main__":
 	features = convert_to_features(all_processed)
 	print len(features)
 	print len(features[0])
+	write_to_mat(features, spam_list)
 
 
