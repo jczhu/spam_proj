@@ -23,7 +23,7 @@ def spam_train(email_features, classification, training):
 
 	# accuracy on test data, better practice lel
 	# this score is lower than the pdf predicted....hmmm
-	test_mat = sio.loadmat('spamTest.mat')
+	test_mat = sio.loadmat('newTest.mat')
 	Xtest = test_mat['Xtest']
 	ytest = np.ravel(test_mat['ytest'])
 	print model.score(Xtest, ytest)
@@ -40,7 +40,7 @@ def top_spam_indicators(model):
 # for testing
 if __name__ == "__main__":
     import sys
-    mat_contents = sio.loadmat('spamTrain.mat')
+    mat_contents = sio.loadmat('newTrain.mat')
     X = mat_contents['X']
     y = np.ravel(mat_contents['y'])
     model = spam_train(X, y, "linear")
@@ -55,5 +55,5 @@ if __name__ == "__main__":
 
     print "Top spam indicators"
     tsi = top_spam_indicators(model)
-    vocab_list = get_vocab_list("vocab.txt")
+    vocab_list = get_vocab_list("newvocab.txt")
     print [(vocab_list[x]) for x in tsi] # also getting different results here

@@ -75,9 +75,9 @@ def convert_to_features(processed_emails):
 # writes data to mat files (split into training data and testing data)
 def write_to_mat(email_features, is_spam):
 	scipy.io.savemat('newTrain.mat', 
-		mdict={'X': email_features[:2610], 'Y': is_spam[:2610]})
+		mdict={'X': email_features[:2610], 'y': is_spam[:2610]})
 	scipy.io.savemat('newTest.mat', 
-		mdict={'Xtest': email_features[2610:], 'Ytest': is_spam[2610:]})
+		mdict={'Xtest': email_features[2610:], 'ytest': is_spam[2610:]})
 
 class cd:
     """Context manager for changing the current working directory"""
