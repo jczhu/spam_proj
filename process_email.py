@@ -54,7 +54,7 @@ def process_email(email_contents):
 # Email features. Converting list of tokens post processing to logical list.
 # The list has 1s in the indices when that word is present in the processed email
 def email_features(word_indices):
-	vocab_list = get_vocab_list("vocab.txt") # should probably store length to save time
+	vocab_list = get_vocab_list("newvocab.txt") # should probably store length to save time
 	email_features = [0] * len(vocab_list)
 
 	# could also do for token in word_indices, but vocab_list length is less variable

@@ -46,10 +46,14 @@ def common_words(processed_emails):
 
 	# sort the words in order of frequency (most frequent to least)
 	word_list = word_dict.items()
-	word_list = sorted(word_list, key=itemgetter(1))
+	word_list = sorted(word_list, key=itemgetter(1), reverse=True)
 
-	# return first 2000 tuples
-	return word_list[:2000]
+	# return top 2000 words
+	return [x for x,_ in word_list[:2000]]
+
+# converts all emails into email features to use as training and testing data
+def convert_to_features(processed_emails):
+	print "ayyy"
 
 class cd:
     """Context manager for changing the current working directory"""
@@ -66,12 +70,17 @@ class cd:
         os.chdir(self.savedPath)
 
 # for testing, and eventually for parsing all the raw email files
+# write top words to file called vocab
 if __name__ == "__main__": 
 	# clean emails for each folder in lingspam
 	path = "~/Downloads/lingspam_public/bare/" 
 	with cd(path):
 		all_processed = process_lingspam()
 	print len(all_processed)
-	print common_words(all_processed)
+	vocab = common_words(all_processed)
+	# write most common words into vocab
+	with open("newvocab.txt", "w") as myfile:
+		for item in vocab:
+			myfile.write("%s\n" % item)
 
 
