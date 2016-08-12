@@ -1,9 +1,9 @@
 from nltk import PorterStemmer
 from nltk.corpus import stopwords
 from operator import itemgetter
-import re
 import string
 import os
+import re
 
 from process_email import process_email, email_features
 
@@ -14,23 +14,35 @@ def process_lingspam():
 	# will hold all the processed emails
 	all_processed = []
 
+	# binary list that indicates whether corresponding email is spam or not
+	# 1 is spam, 0 is ham
+	is_spam = []
+
 	for path in all_paths:
 		with cd(os.getcwd() + path):
-			all_processed = process_folder(all_processed)
+			all_processed, is_spam = process_folder(all_processed, is_spam)
 
 	# remove the first empty element and return
-	return all_processed[1:]
+	return all_processed[1:], is_spam[1:]
 
 # remove subject line headers from each file and process the body of the email
 # return all the processed results from current folder
 # email_list is the list to add processed emails to
-def process_folder(email_list):
+# is_spam indicates whether the corresponding email is spam or ham
+def process_folder(email_list, is_spam):
+	pattern = re.compile(r"spmsg(.*)txt")
 	for filename in os.listdir(os.getcwd()):
 		with open(filename, 'r') as myfile:
 			email_contents = myfile.read().splitlines(True)
 			email_list.append(process_email(' '.join(email_contents[2:])))
+
+			# check if spam
+			if pattern.match(filename):
+				is_spam.append(1)
+			else:
+				is_spam.append(0)
 	
-	return email_list
+	return email_list, is_spam
 
 # finds most common words in processed emails
 # processed_emails is the list of lists of processed emails
@@ -48,12 +60,16 @@ def common_words(processed_emails):
 	word_list = word_dict.items()
 	word_list = sorted(word_list, key=itemgetter(1), reverse=True)
 
-	# return top 2000 words
-	return [x for x,_ in word_list[:2000]]
+	# return top 700 words
+	return [x for x,_ in word_list[:700]]
 
 # converts all emails into email features to use as training and testing data
 def convert_to_features(processed_emails):
-	print "ayyy"
+	features = []
+	for i in range(0, len(processed_emails)):
+		features.append(email_features(processed_emails[i]))
+
+	return features
 
 class cd:
     """Context manager for changing the current working directory"""
@@ -75,12 +91,17 @@ if __name__ == "__main__":
 	# clean emails for each folder in lingspam
 	path = "~/Downloads/lingspam_public/bare/" 
 	with cd(path):
-		all_processed = process_lingspam()
+		all_processed, spam_list = process_lingspam()
 	print len(all_processed)
+	# print spam_list
+	print len(spam_list)
 	vocab = common_words(all_processed)
 	# write most common words into vocab
 	with open("newvocab.txt", "w") as myfile:
 		for item in vocab:
 			myfile.write("%s\n" % item)
+	features = convert_to_features(all_processed)
+	print len(features)
+	print len(features[0])
 
 
