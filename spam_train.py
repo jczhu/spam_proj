@@ -46,7 +46,7 @@ if __name__ == "__main__":
     model = spam_train(X, y, "linear")
 
 
-    with open("emailSample1.txt", 'r') as myfile: 
+    with open("spamSample1.txt", 'r') as myfile: 
 		email_contents = myfile.read().replace('\n', '')
     features = np.reshape(email_features(process_email(email_contents)), (1, -1))
     print "Prediction"
