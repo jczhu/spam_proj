@@ -34,7 +34,7 @@ class index:
             # TO DO: get training data from elsewhere
             # TO DO: improve model??? Cross-validation somehow?
             if not model:
-                mat_contents = sio.loadmat('spamTrain.mat')
+                mat_contents = sio.loadmat('newTrain.mat')
                 X = mat_contents['X']
                 y = np.ravel(mat_contents['y'])
                 model = spam_train(X, y, "linear")
