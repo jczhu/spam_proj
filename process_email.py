@@ -1,5 +1,4 @@
 from nltk import PorterStemmer
-from nltk.corpus import stopwords
 import re
 import string
 
@@ -14,10 +13,21 @@ def get_vocab_list(filename):
     f.close()
     return vocab
 
+# Gets stopwords from nltk's stopwords corpus (in file "english")
+# workaround absence of stopwords in Heroku
+def get_stopwords(filename):
+    stopwords = []
+    f = open(filename, 'r')
+    for line in f:
+    	line = line.strip(" \n\t") # removes num due to vocab.txt format
+        stopwords.append(line)
+    f.close()
+    return stopwords
+
 # Processes email by modifying urls, trimming words to word roots, removing punctuation.
 # Returns list of word indices
 def process_email(email_contents):
-	little_words = stopwords.words("english")
+	little_words = get_stopwords("english")
 
 	email_contents = email_contents.lower() 	# hopefully not redundant
 
@@ -63,7 +73,7 @@ def email_features(word_indices):
 			email_features[i] = 1
 
 	#for testing, print how many non-zero elements there were 
-	# print sum(email_features)
+	print sum(email_features)
 
 	return email_features
 
