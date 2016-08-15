@@ -8,7 +8,7 @@ def get_vocab_list(filename):
     vocab = []
     f = open(filename, 'r')
     for line in f:
-    	line = line.strip("0123456789 \n\t") # removes num due to vocab.txt format
+    	line = line.strip(" \n\t")
         vocab.append(line)
     f.close()
     return vocab
@@ -19,7 +19,7 @@ def get_stopwords(filename):
     stopwords = []
     f = open(filename, 'r')
     for line in f:
-    	line = line.strip(" \n\t") # removes num due to vocab.txt format
+    	line = line.strip(" \n\t")
         stopwords.append(line)
     f.close()
     return stopwords
@@ -73,7 +73,7 @@ def email_features(word_indices):
 			email_features[i] = 1
 
 	#for testing, print how many non-zero elements there were 
-	print sum(email_features)
+	# print sum(email_features)
 
 	return email_features
 

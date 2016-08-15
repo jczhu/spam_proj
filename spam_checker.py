@@ -30,9 +30,6 @@ class index:
         else:
             features = np.reshape(email_features(process_email(email)), (1, -1))
 
-            # TO DO: add separate method to read in training data
-            # TO DO: get training data from elsewhere
-            # TO DO: improve model??? Cross-validation somehow?
             if not model:
                 mat_contents = sio.loadmat('newTrain.mat')
                 X = mat_contents['X']

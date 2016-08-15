@@ -19,6 +19,7 @@ def spam_train(email_features, classification, training):
 	model.fit(X, y)
 
 	# accuracy on training data, probs not best practice
+	print "Accuracy on training data:",
 	print model.score(X, y)
 
 	# accuracy on test data, better practice lel
@@ -26,6 +27,7 @@ def spam_train(email_features, classification, training):
 	test_mat = sio.loadmat('newTest.mat')
 	Xtest = test_mat['Xtest']
 	ytest = np.ravel(test_mat['ytest'])
+	print "Accuracy on test data:",
 	print model.score(Xtest, ytest)
 
 	return model
@@ -49,11 +51,11 @@ if __name__ == "__main__":
     with open("spamSample1.txt", 'r') as myfile: 
 		email_contents = myfile.read().replace('\n', '')
     features = np.reshape(email_features(process_email(email_contents)), (1, -1))
-    print "Prediction"
+    print "Prediction:",
     print np.asscalar(model.predict(features))
 
 
-    print "Top spam indicators"
+    print "Top spam indicators:",
     tsi = top_spam_indicators(model)
     vocab_list = get_vocab_list("newvocab.txt")
-    print [(vocab_list[x]) for x in tsi] # also getting different results here
+    print [(vocab_list[x]) for x in tsi]
