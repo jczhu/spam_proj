@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.io as sio
 from sklearn.svm import SVC, LinearSVC
+from sklearn.metrics import f1_score, precision_score, recall_score
 
 from process_email import get_vocab_list, process_email, email_features
 
@@ -30,6 +31,20 @@ def spam_train(email_features, classification, training):
 	print "Accuracy on test data:",
 	print model.score(Xtest, ytest)
 
+	ypred = model.predict(Xtest)
+
+	# precision is ability of classifier not to avoid false positives, best is 1
+	print "precision on test data:",
+	print precision_score(ytest, ypred)
+
+	# recall is ability of classifier to find all positive samples
+	print "recall on test data:",
+	print recall_score(ytest, ypred)
+
+	# f1 score on test data; worst is 0, 1 is best 
+	print "f1 score on test data:",
+	print f1_score(ytest, ypred)
+
 	return model
 
 # Returns 15 words most common (indicative?) of spam
@@ -37,7 +52,6 @@ def spam_train(email_features, classification, training):
 def top_spam_indicators(model):
 	coef = np.array(np.ravel(model.coef_))
 	return np.argpartition(coef, -15)[-15:]
-
 
 # for testing
 if __name__ == "__main__":
