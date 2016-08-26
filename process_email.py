@@ -1,4 +1,5 @@
 from nltk import PorterStemmer
+from nltk.corpus import stopwords
 import re
 import string
 
@@ -27,7 +28,8 @@ def get_stopwords(filename):
 # Processes email by modifying urls, trimming words to word roots, removing punctuation.
 # Returns list of word indices
 def process_email(email_contents):
-	little_words = get_stopwords("english")
+	little_words = get_stopwords("english") # for web app in general...probs bad design
+	#little_words = stopwords.words("english") # for process_lingspam
 
 	email_contents = email_contents.lower() 	# hopefully not redundant
 
