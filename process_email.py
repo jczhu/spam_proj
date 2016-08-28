@@ -68,10 +68,11 @@ def process_email(email_contents):
 def email_features(word_indices):
 	vocab_list = get_vocab_list("newvocab.txt") # should probably store length to save time
 	email_features = [0] * len(vocab_list)
+	word_set = set(word_indices) # faster to search
 
 	# could also do for token in word_indices, but vocab_list length is less variable
 	for i in range(0, len(vocab_list)):	
-		if vocab_list[i] in word_indices:
+		if vocab_list[i] in word_set:
 			email_features[i] = 1
 
 	#for testing, print how many non-zero elements there were 
@@ -84,4 +85,4 @@ if __name__ == "__main__":
    import sys
    with open(sys.argv[1], 'r') as myfile: 
    	email_contents = myfile.read().replace('\n', ' ')
-   email_features(process_email(email_contents))
+   print email_features(process_email(email_contents))
