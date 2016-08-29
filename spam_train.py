@@ -61,18 +61,18 @@ def top_spam_indicators(model):
 if __name__ == "__main__":
     import sys
     if sys.argv[1] == "stop":
-    	mat_contents = sio.loadmat('stopTrain.mat')
+    	mat_contents = sio.loadmat('datafiles/stopTrain.mat')
     	X = mat_contents['X']
     	y = np.ravel(mat_contents['y'])
-    	model = spam_train(X, y, "linear", "stopTest.mat")
+    	model = spam_train(X, y, "linear", "datafiles/stopTest.mat")
     else:
-    	mat_contents = sio.loadmat('newTrain.mat')
+    	mat_contents = sio.loadmat('datafiles/newTrain.mat')
     	X = mat_contents['X']
     	y = np.ravel(mat_contents['y'])
-    	model = spam_train(X, y, "linear", "newTest.mat")
+    	model = spam_train(X, y, "linear", "datafiles/newTest.mat")
 
 
-    with open("spamSample1.txt", 'r') as myfile: 
+    with open("emails/spamSample1.txt", 'r') as myfile: 
 		email_contents = myfile.read().replace('\n', '')
     features = np.reshape(email_features(process_email(email_contents)), (1, -1))
     print "Prediction (1 is spam, 0 is not spam):",
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     print "Top spam indicators:",
     tsi = top_spam_indicators(model)
     if sys.argv[1] == "stop":
-    	vocab_list = get_vocab_list("stopvocab.txt")
+    	vocab_list = get_vocab_list("vocab/stopvocab.txt")
     else:
-    	vocab_list = get_vocab_list("newvocab.txt")
+    	vocab_list = get_vocab_list("vocab/newvocab.txt")
     print [(vocab_list[x]) for x in tsi]
