@@ -81,9 +81,9 @@ def write_to_mat(email_features, is_spam):
 	email_features_shuf = [email_features[i] for i in index_shuf]
 	is_spam_shuf = [is_spam[i] for i in index_shuf]
 
-	scipy.io.savemat('newTrain.mat', 
+	scipy.io.savemat('stopTrain.mat', 
 		mdict={'X': email_features_shuf[:2610], 'y': is_spam_shuf[:2610]})
-	scipy.io.savemat('newTest.mat', 
+	scipy.io.savemat('stopTest.mat', 
 		mdict={'Xtest': email_features_shuf[2610:], 'ytest': is_spam_shuf[2610:]})
 
 class cd:
@@ -112,7 +112,7 @@ if __name__ == "__main__":
 	print len(spam_list)
 	vocab = common_words(all_processed)
 	# write most common words into vocab
-	with open("newvocab.txt", "w") as myfile:
+	with open("stopvocab.txt", "w") as myfile:
 		for item in vocab:
 			myfile.write("%s\n" % item)
 	features = convert_to_features(all_processed)

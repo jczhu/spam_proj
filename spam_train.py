@@ -8,7 +8,8 @@ from process_email import get_vocab_list, process_email, email_features
 # Trains svm
 # email_features should be 2d array, classification is simple list
 # training specifies which sklearn package to use
-def spam_train(email_features, classification, training):
+# testdata is the name of the file holding data to test the model with
+def spam_train(email_features, classification, training, testdata):
 	X = np.array(email_features)
 	y = np.array(classification)
 
@@ -23,9 +24,14 @@ def spam_train(email_features, classification, training):
 	print "Accuracy on training data:",
 	print model.score(X, y)
 
+	cross_validation(model, testdata)
+	return model
+
+# cross validation on the model
+# filename is the name of the file with the test data
+def cross_validation(model, testdata):
 	# accuracy on test data, better practice lel
-	# this score is lower than the pdf predicted....hmmm
-	test_mat = sio.loadmat('newTest.mat')
+	test_mat = sio.loadmat(testdata)
 	Xtest = test_mat['Xtest']
 	ytest = np.ravel(test_mat['ytest'])
 	print "Accuracy on test data:",
@@ -45,8 +51,6 @@ def spam_train(email_features, classification, training):
 	print "f1 score on test data:",
 	print f1_score(ytest, ypred)
 
-	return model
-
 # Returns 15 words most common (indicative?) of spam
 # Can only use if linear svm model
 def top_spam_indicators(model):
@@ -56,20 +60,29 @@ def top_spam_indicators(model):
 # for testing
 if __name__ == "__main__":
     import sys
-    mat_contents = sio.loadmat('newTrain.mat')
-    X = mat_contents['X']
-    y = np.ravel(mat_contents['y'])
-    model = spam_train(X, y, "linear")
+    if sys.argv[1] == "stop":
+    	mat_contents = sio.loadmat('stopTrain.mat')
+    	X = mat_contents['X']
+    	y = np.ravel(mat_contents['y'])
+    	model = spam_train(X, y, "linear", "stopTest.mat")
+    else:
+    	mat_contents = sio.loadmat('newTrain.mat')
+    	X = mat_contents['X']
+    	y = np.ravel(mat_contents['y'])
+    	model = spam_train(X, y, "linear", "newTest.mat")
 
 
     with open("spamSample1.txt", 'r') as myfile: 
 		email_contents = myfile.read().replace('\n', '')
     features = np.reshape(email_features(process_email(email_contents)), (1, -1))
-    print "Prediction:",
+    print "Prediction (1 is spam, 0 is not spam):",
     print np.asscalar(model.predict(features))
 
 
     print "Top spam indicators:",
     tsi = top_spam_indicators(model)
-    vocab_list = get_vocab_list("newvocab.txt")
+    if sys.argv[1] == "stop":
+    	vocab_list = get_vocab_list("stopvocab.txt")
+    else:
+    	vocab_list = get_vocab_list("newvocab.txt")
     print [(vocab_list[x]) for x in tsi]
