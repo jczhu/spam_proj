@@ -65,8 +65,9 @@ def process_email(email_contents):
 
 # Email features. Converting list of tokens post processing to logical list.
 # The list has 1s in the indices when that word is present in the processed email
-def email_features(word_indices):
-	vocab_list = get_vocab_list("vocab/newvocab.txt") 
+# vocabfile is the name of the file which has the appropriate vocabulary
+def email_features(word_indices, vocabfile):
+	vocab_list = get_vocab_list(vocabfile) 
 	email_features = [0] * len(vocab_list)
 	word_set = set(word_indices) # faster to search
 
@@ -85,4 +86,4 @@ if __name__ == "__main__":
    import sys
    with open(sys.argv[1], 'r') as myfile: 
    	email_contents = myfile.read().replace('\n', ' ')
-   print email_features(process_email(email_contents))
+   print email_features(process_email(email_contents), sys.argv[2])

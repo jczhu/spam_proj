@@ -72,9 +72,15 @@ if __name__ == "__main__":
     	model = spam_train(X, y, "linear", "datafiles/newTest.mat")
 
 
-    with open("emails/spamSample1.txt", 'r') as myfile: 
+    with open("emails/spamSample2.txt", 'r') as myfile: 
 		email_contents = myfile.read().replace('\n', '')
-    features = np.reshape(email_features(process_email(email_contents)), (1, -1))
+		if sys.argv[1] == "stop":
+			features = np.reshape(email_features(process_email(email_contents), 
+				"vocab/stopvocab.txt"), (1, -1))
+		else:
+			features = np.reshape(email_features(process_email(email_contents), 
+				"vocab/newvocab.txt"), (1, -1))
+
     print "Prediction (1 is spam, 0 is not spam):",
     print np.asscalar(model.predict(features))
 
@@ -82,6 +88,7 @@ if __name__ == "__main__":
     print "Top spam indicators:",
     tsi = top_spam_indicators(model)
     if sys.argv[1] == "stop":
+    	print "ayyy"
     	vocab_list = get_vocab_list("vocab/stopvocab.txt")
     else:
     	vocab_list = get_vocab_list("vocab/newvocab.txt")
