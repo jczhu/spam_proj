@@ -28,7 +28,7 @@ def get_stopwords(filename):
 # Processes email by modifying urls, trimming words to word roots, removing punctuation.
 # Returns list of word indices
 def process_email(email_contents):
-	# little_words = get_stopwords("english") # for web app in general...probs bad design
+	little_words = get_stopwords("english") # for web app in general...probs bad design
 	# little_words = stopwords.words("english") # for process_lingspam
 
 	email_contents = email_contents.lower() 	# hopefully not redundant
@@ -53,8 +53,8 @@ def process_email(email_contents):
 	email_contents = re.sub(r"[^a-zA-Z0-9]", " ", email_contents)
 
 	# remove stop words
-	# email_contents = ' '.join([word for word in email_contents.split() 
-	# 	if word not in little_words])
+	email_contents = ' '.join([word for word in email_contents.split() 
+		if word not in little_words])
 
 	# Tokenize email and convert individual words to numbers, based on vocab list
 	tokens = email_contents.split()

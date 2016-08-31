@@ -8,7 +8,7 @@ from process_email import get_vocab_list, process_email, email_features
 # Trains svm
 # email_features should be 2d array, classification is simple list
 # training specifies which sklearn package to use
-# testdata is the name of the file holding data to test the model with
+# testdata is file with data for cross-validation (None if no cross-val)
 def spam_train(email_features, classification, training, testdata):
 	X = np.array(email_features)
 	y = np.array(classification)
@@ -24,11 +24,12 @@ def spam_train(email_features, classification, training, testdata):
 	print "Accuracy on training data:",
 	print model.score(X, y)
 
-	cross_validation(model, testdata)
+	if testdata:
+		cross_validation(model, testdata)
 	return model
 
 # cross validation on the model
-# filename is the name of the file with the test data
+# testdata is the name of the file with the test data
 def cross_validation(model, testdata):
 	# accuracy on test data, better practice lel
 	test_mat = sio.loadmat(testdata)
@@ -88,7 +89,6 @@ if __name__ == "__main__":
     print "Top spam indicators:",
     tsi = top_spam_indicators(model)
     if sys.argv[1] == "stop":
-    	print "ayyy"
     	vocab_list = get_vocab_list("vocab/stopvocab.txt")
     else:
     	vocab_list = get_vocab_list("vocab/newvocab.txt")

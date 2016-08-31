@@ -31,10 +31,10 @@ class index:
             features = np.reshape(email_features(process_email(email)), (1, -1))
 
             if not model:
-                mat_contents = sio.loadmat('newTrain.mat')
+                mat_contents = sio.loadmat('datafiles/newTrain.mat')
                 X = mat_contents['X']
                 y = np.ravel(mat_contents['y'])
-                model = spam_train(X, y, "linear")
+                model = spam_train(X, y, "linear", None) # no crossval for now
 
             if np.asscalar(model.predict(features)) == 1:
                 error = "spam"
